@@ -1,0 +1,67 @@
+Commandline and Flask
+
+	You can always enter a python commandline and import your app from your scripts. 
+		--from <filename> import <app> #Where app is a Flask() object.
+
+		In [2]: app.url_map
+		Out[2]:
+		Map([<Rule '/index' (OPTIONS, GET, HEAD) -> index>,
+ 			<Rule '/static/<filename>' (OPTIONS, GET, HEAD) -> static>])
+
+ 		In [3]: app.config
+		Out[3]: <Config {'SECRET_KEY': None, 'JSON_AS_ASCII': True, 'TRAP_HTTP_EXCEPTIONS': False, 'DEBUG': False, 'USE_X_SENDFILE': False, 'SESSION_COOKIE_HTTPONLY': True, 'APPLICATION_ROOT': None, 'PERMANENT_SESSION_LIFETIME': datetime.timedelta(31), 'PREFERRED_URL_SCHEME': 'http', 'SESSION_COOKIE_DOMAIN': None, 'PROPAGATE_EXCEPTIONS': None, 'SESSION_COOKIE_PATH': None, 'TRAP_BAD_REQUEST_ERRORS': False, 'SESSION_COOKIE_SECURE': False, 'SERVER_NAME': None, 'SEND_FILE_MAX_AGE_DEFAULT': 43200, 'MAX_CONTENT_LENGTH': None, 'JSONIFY_PRETTYPRINT_REGULAR': True, 'LOGGER_NAME': 'thermos2.thermos', 'TESTING': False, 'SESSION_COOKIE_NAME': 'session', 'JSON_SORT_KEYS': True, 'PRESERVE_CONTEXT_ON_EXCEPTION': None}>
+
+
+		The Request object:
+
+		Globally available
+			But temporarily bound to the current request.
+			Don't use the request object outside of a view function
+
+			Useful attributes of the request object:
+				form - Form data from POST or PUT requests
+				args - Contents of the query string (The part in the url after the question mark)
+				cookies - cookies transmitted with the request
+				headers - the incoming request headers as a dictionary like object
+				files - Files uploaded as part of a POST or PUT request
+				method - the current request method (POST, GET etc)
+
+		Session Object
+			Remeber data between requests
+			Works by setting a cookie in the browser
+			Data associated with teh user's HTTP Session
+			Is a Flask context global (LIKE Request, only use inside a view function)
+
+			Using sessions:
+				Need to set a Flask.secret_key for creating cookies
+				stores values in it like a dict
+
+
+		Flashing messages
+
+			Use flash()
+				-Message is stored in the session so that you can show it to the user
+				in a future request
+			Available in template through get_flash_messages()
+
+
+
+	ORM
+
+	One to Many Relationship
+
+	Establised by using a foriegn key column constaint on the many side
+
+	Ex:
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+	One the one side you will need to use the db.relationship() method
+
+	Ex:
+	bookmarks = db.relationship('Bookmark', backref='user', lazy='dynamic') 
+
+	Lazy options
+	# lazy='select' (Default) - Load the data lazily using standard select
+	# lazy='joined' - Load the data in the same query as the parent using JOIN
+	# lazy='subquery' - Like joined but as a subquery
+	# lazy='dynamic' - useful if you have many items. Returns a query object which you can further refine before loading items. Usually what you want if you expect more than a handful of results.
