@@ -1,6 +1,6 @@
 # from logging import DEBUG
 
-from flask import render_template, request, redirect, url_for, flash
+from flask import render_template, request, redirect, url_for, flash, abort
 from flask_login import login_required, login_user, logout_user, current_user
 
 from . import app, db, login_manager
@@ -20,6 +20,20 @@ def load_user(userid):
 def index():
     return render_template('index.html', new_bookmarks=Bookmark.newest(5))
 
+
+@app.route('/edit/<int:bookmark_id>', methods=['GET', 'POST'])
+@login_required
+def edit_bookmark(bookmark_id):
+    bookmark = Bookmark.query.get_or_404(bookmark_id)
+    if current_user != bookmark.user:
+        abort(403)
+    form = BookmarkForm(obj=bookmark)
+    if form.validate_on_submit():
+        form.populate_obj(bookmark)
+        db.session.commit()
+        flash("Stored: '{}'".format(bookmark.description))
+        return redirect(url_for('user', username=current_user.username))
+    return render_template('bookmark_form.html', form=form, title='Edit bookmark')
 
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
