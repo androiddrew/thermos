@@ -15,6 +15,8 @@ app.config[
     x9c\x031\xde'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'thermos.db')
 app.config['DEBUG'] = True
+#app.config['SERVER_NAME'] = '127.0.0.1:8080'
+
 
 db = SQLAlchemy(app)
 

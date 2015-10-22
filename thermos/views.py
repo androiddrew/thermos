@@ -5,7 +5,7 @@ from flask_login import login_required, login_user, logout_user, current_user
 
 from . import app, db, login_manager
 from .forms import BookmarkForm, LoginForm, SignupForm
-from .models import User, Bookmark
+from .models import User, Bookmark, Tag
 
 # app.logger.setLevel(DEBUG)
 
@@ -35,6 +35,7 @@ def edit_bookmark(bookmark_id):
         return redirect(url_for('user', username=current_user.username))
     return render_template('bookmark_form.html', form=form, title='Edit bookmark')
 
+
 @app.route('/add', methods=['GET', 'POST'])
 @login_required
 def add():
@@ -42,12 +43,13 @@ def add():
     if form.validate_on_submit():
         url = form.url.data
         description = form.description.data
-        bm = Bookmark(user=current_user, url=url, description=description)
+        tags = form.tags.data
+        bm = Bookmark(user=current_user, url=url, description=description, tags=tags)
         db.session.add(bm)
         db.session.commit()
         flash("Stored: '{}'".format(description))
         return redirect(url_for('index'))
-    return render_template('add.html', form=form)
+    return render_template('bookmark_form.html', form=form)
 
 
 @app.route('/user/<username>')
