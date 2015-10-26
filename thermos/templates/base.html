@@ -6,8 +6,10 @@
         <title> {% block title %}{% endblock %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.min.css')}}">
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+        {% block styles %}
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/normalize.min.css')}}">
+            <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+        {% endblock %}
         <script src=" {{ url_for('static',filename='js/vendor/modernizr-2.8.3-respond-1.4.2.min.js')}}"></script>
     </head>
     <body>
@@ -56,10 +58,12 @@
                 {% endblock %}
 
                 {% block sidebar %}
-                <aside>
-                    <h3>aside</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero, eget molestie nisl pharetra in. In semper consequat est, eu porta velit mollis nec. Curabitur posuere enim eget turpis feugiat tempor. Etiam ullamcorper lorem dapibus velit suscipit ultrices.</p>
-                </aside>
+                    <aside>
+                        <h3>Tags</h3>
+                            {% for t in all_tags() %}
+                                <a href="{{ url_for('tag', name=t) }}">{{ t }}</a>
+                            {% endfor %}
+                    </aside>
                 {% endblock %}
 
             </div> <!-- #main -->
@@ -73,10 +77,11 @@
 
         {{ moment.include_jquery() }}
         {{ moment.include_moment() }}
-
+        {% block scripts %}
         <script src="{{ url_for('static', filename='js/main.js')}}"></script>
         <script>
             fadeFlashes()
         </script>
+        {% endblock %}
     </body>
 </html>
