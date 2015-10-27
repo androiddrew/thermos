@@ -95,6 +95,12 @@ def logout():
     return redirect(url_for('index'))
 
 
+@app.route('/tag/<name>')
+def tag(name):
+    tag = Tag.query.filter_by(name=name).first_or_404()
+    return render_template('tag.html', tag=tag)
+
+
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template(
@@ -105,3 +111,10 @@ def page_not_found(e):
 @app.errorhandler(500)
 def server_error(e):
     return render_template('500.html'), 500  # debug needs to be turned off to hit 500
+
+@app.context_processor
+def inject_tags():
+    """Will return only a dict object that is made available to all templates. We used Tag.all to reference the function
+     without calling the function. This will prevent the database from executing the all() query everytime we process
+     a template. Instead we make the function available for calling in the individual template where it is needed."""
+    return dict(all_tags=Tag.all)

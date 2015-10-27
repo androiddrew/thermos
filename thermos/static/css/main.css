@@ -236,6 +236,24 @@ span.editlinks {
     float: right;
 }
 
+/*CSS for the links in the aside bar */
+a:hover, aside a:hover, aside a:visited:hover {
+    color: #D39447;
+}
+
+aside a {
+    color: #FFD6A3;
+}
+
+aside a:hover{
+    color: #F5BB73;
+}
+
+aside a:visited {
+    color: #D39447;
+}
+
+
 
 /* ==========================================================================
    Media Queries
