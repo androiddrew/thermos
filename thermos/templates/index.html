@@ -9,7 +9,7 @@ Thermos -- Welcome
                         <h1>Welcome</h1>
                         <p>Thermos is a simple social book marking website.</p>
                         {% if current_user.is_anonymous %}
-                            <p>Don't have an account? Create one by <a href="{{ url_for('signup') }}">Signing up</a></p>
+                            <p>Don't have an account? Create one by <a href="{{ url_for('auth.signup') }}">Signing up</a></p>
                         {% endif %}
                     </header>
 
