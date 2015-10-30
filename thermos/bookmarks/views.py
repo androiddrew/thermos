@@ -51,7 +51,7 @@ def add():
         db.session.add(bm)
         db.session.commit()
         flash("Stored: '{}'".format(description))
-        return redirect(url_for('index'))
+        return redirect(url_for('main.index'))
     return render_template('bookmark_form.html', form=form)
 
 @bookmarks.route('/user/<username>')
