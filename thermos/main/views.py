@@ -15,6 +15,7 @@ def load_user(userid):
 def index():
     return render_template('index.html', new_bookmarks=Bookmark.newest(5))
 
+
 @main.app_errorhandler(403)
 def forbidden(e):
     return render_template('403.html'), 403
